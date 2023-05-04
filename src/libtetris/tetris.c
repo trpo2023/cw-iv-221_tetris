@@ -1,22 +1,21 @@
-#include <stdlib.h>
 #include "tetris.h"
+#include <stdlib.h>
 
-Field *createField(int widthT, int heightT)
+Field* createField(int widthT, int heightT)
 {
-    Field *tetrisField = (Field *)malloc(sizeof(Field));
+    Field* tetrisField = (Field*)malloc(sizeof(Field));
     tetrisField->width = widthT;
     tetrisField->height = heightT;
-    tetrisField->blocks = (Block *)malloc(sizeof(Block) * widthT * heightT);
-    for (int i = 0; i < widthT * heightT; i++)
-    {
+    tetrisField->blocks = (Block*)malloc(sizeof(Block) * widthT * heightT);
+    for (int i = 0; i < widthT * heightT; i++) {
         tetrisField->blocks[i].b = 0;
     }
     return tetrisField;
 }
 
-Figures *createFigures(int countF, int sizeF, Block *templateF)
+Figures* createFigures(int countF, int sizeF, Block* templateF)
 {
-    Figures *tetrisFigures = (Figures *)malloc(sizeof(Figures));
+    Figures* tetrisFigures = (Figures*)malloc(sizeof(Figures));
     tetrisFigures->blocks = templateF;
     tetrisFigures->count = countF;
     tetrisFigures->size = sizeF;
@@ -24,47 +23,44 @@ Figures *createFigures(int countF, int sizeF, Block *templateF)
     return tetrisFigures;
 }
 
-Game *createGame(int width, int height, int size, int count, Block *template)
+Game* createGame(int width, int height, int size, int count, Block* template)
 {
-    Game *tetrisGame = (Game *)malloc(sizeof(Game));
+    Game* tetrisGame = (Game*)malloc(sizeof(Game));
     tetrisGame->field = createField(width, height);
     tetrisGame->figures = createFigures(count, size, template);
     return tetrisGame;
 }
 
-Figure *createNewFigure(Game *tetGame)
+Figure* createNewFigure(Game* tetGame)
 {
-    Figure *t = (Figure *)malloc(sizeof(Figure));
+    Figure* t = (Figure*)malloc(sizeof(Figure));
     t->x = 0;
     t->y = 0;
     t->size = tetGame->figures->size;
-    t->blocks = (Block *)malloc(sizeof(Block) * t->size * t->size);
+    t->blocks = (Block*)malloc(sizeof(Block) * t->size * t->size);
     return t;
 }
 
-void freeFigureTet(Figure *f)
+void freeFigureTet(Figure* f)
 {
-    if (f != NULL)
-    {
+    if (f != NULL) {
         free(f->blocks);
     }
     free(f);
 }
-void freeFiguresTet(Figures *f) //?
+void freeFiguresTet(Figures* f) //?
 {
-
     free(f);
 }
-void freeFieldTet(Field *f)
+void freeFieldTet(Field* f)
 {
     if (f != NULL)
         free(f->blocks);
     free(f);
 }
-void freeGameTet(Game *g)
+void freeGameTet(Game* g)
 {
-    if (g != NULL)
-    {
+    if (g != NULL) {
         freeFieldTet(g->field);
         freeFiguresTet(g->figures);
         free(g);

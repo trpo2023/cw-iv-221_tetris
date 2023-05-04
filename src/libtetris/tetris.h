@@ -38,3 +38,7 @@ Field *createField(int widthT, int heightT);
 Figures *createFigures(int countT, int sizeT, Block *templateT);
 Game *createGame(int width, int height, int count, int size, Block *template);
 Figure *createNewFigure(Game *tetGame);
+void freeFigureTet(Figure *f);
+void freeFiguresTet(Figures *f);
+void freeFieldTet(Field *f);
+void freeGameTet(Game *g);

@@ -41,3 +41,32 @@ Figure *createNewFigure(Game *tetGame)
     t->blocks = (Block *)malloc(sizeof(Block) * t->size * t->size);
     return t;
 }
+
+void freeFigureTet(Figure *f)
+{
+    if (f != NULL)
+    {
+        free(f->blocks);
+    }
+    free(f);
+}
+void freeFiguresTet(Figures *f) //?
+{
+
+    free(f);
+}
+void freeFieldTet(Field *f)
+{
+    if (f != NULL)
+        free(f->blocks);
+    free(f);
+}
+void freeGameTet(Game *g)
+{
+    if (g != NULL)
+    {
+        freeFieldTet(g->field);
+        freeFiguresTet(g->figures);
+        free(g);
+    }
+}

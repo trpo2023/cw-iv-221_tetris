@@ -22,7 +22,6 @@ Figures* createFigures(int countF, int sizeF, Block* templateF)
 
     return tetrisFigures;
 }
-
 Game* createGame(int width, int height, int size, int count, Block* template)
 {
     Game* tetrisGame = (Game*)malloc(sizeof(Game));
@@ -30,7 +29,6 @@ Game* createGame(int width, int height, int size, int count, Block* template)
     tetrisGame->figures = createFigures(count, size, template);
     return tetrisGame;
 }
-
 Figure* createNewFigure(Game* tetGame)
 {
     Figure* t = (Figure*)malloc(sizeof(Figure));
@@ -41,6 +39,35 @@ Figure* createNewFigure(Game* tetGame)
     return t;
 }
 
+void dropNewFigure(Game* tetGame)
+{
+    Figure* t = createNewFigure(tetGame);
+
+    t->x = tetGame->field->width / 2
+            - t->size / 2; // Поставить фигуру по середине
+    t->y = 0;
+
+    // Выбрать рандомную фигуру из списка templates()
+    int fnum = rand() % tetGame->figures->count;
+    for (int i = 0; i < t->size; i++) {
+        for (int j = 0; j < t->size; j++) {
+            // Присваиваем значени текущей фигуры из списка всех
+            // фигур(templates), т.е. t - это текущая фигура
+
+            t->blocks[i * t->size + j].b
+                    = tetGame->figures
+                              ->blocks
+                                      [fnum * t->size * t->size + i * t->size
+                                       + j]
+                              .b;
+        }
+    }
+
+    // Меняем на новую фигуру
+    freeFigureTet(tetGame->figure);
+    tetGame->figure = t;
+}
+
 void freeFigureTet(Figure* f)
 {
     if (f != NULL) {
@@ -48,7 +75,7 @@ void freeFigureTet(Figure* f)
     }
     free(f);
 }
-void freeFiguresTet(Figures* f) //?
+void freeFiguresTet(Figures* f)
 {
     free(f);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 typedef struct Block {
-    int b; // присутствует ли блок на поле
+    int b; // присутствует ли блок (если 1, то да, елси 0, то нет)
 } Block;
 
 typedef struct Field {
@@ -29,10 +29,16 @@ typedef struct Game {
     Figures* figures;
 } Game;
 
+// Создание игровых объектов
 Field* createField(int widthT, int heightT);
 Figures* createFigures(int countT, int sizeT, Block* templateT);
 Game* createGame(int width, int height, int count, int size, Block* template);
 Figure* createNewFigure(Game* tetGame);
+
+// Основная логика игры
+void dropNewFigure(Game* tetGame);
+
+// Освобождение памяти
 void freeFigureTet(Figure* f);
 void freeFiguresTet(Figures* f);
 void freeFieldTet(Field* f);

@@ -67,6 +67,31 @@ void dropNewFigure(Game* tetGame)
     freeFigureTet(tetGame->figure);
     tetGame->figure = t;
 }
+int collisionEnter(Game* tetGame)
+{
+    Figure* t = tetGame->figure;
+    Field* tf = tetGame->field;
+    for (int i = 0; i < t->size; i++) // i - y, j - x
+    {
+        for (int j = 0; j < t->size; j++) {
+            if (t->blocks[i * t->size + j].b != 0) {
+                int fx = t->x + j;
+                int fy = t->y + i;
+                if (tf->blocks[fy * tf->width + fx].b
+                    != 0) // Если столкнулся с другим блоком
+                {
+                    return 1;
+                }
+                if (fx < 0 || fx >= tf->width || fy < 0
+                    || fy >= tf->height) // Елси столкнулся с границей
+                {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 void freeFigureTet(Figure* f)
 {

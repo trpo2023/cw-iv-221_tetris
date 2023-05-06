@@ -108,6 +108,21 @@ void plantFigure(Game* tetGame)
         }
     }
 }
+void calculateTetris(Game* tetGame) // Прочсет одного такта
+{
+    tetGame->figure->y++;
+    if (collisionEnter(tetGame)) {
+        tetGame->figure->y--;
+        plantFigure(tetGame);
+        dropNewFigure(tetGame);
+        if (collisionEnter(tetGame)) // если коллизия произошла вновь, то нет
+                                     // места, а следовательно игра окончена
+        {
+            // game over
+            return;
+        }
+    }
+}
 
 void freeFigureTet(Figure* f)
 {

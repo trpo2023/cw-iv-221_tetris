@@ -1,5 +1,5 @@
 #pragma once
-
+#define TICKS_START 60
 typedef struct Block {
     int b; // присутствует ли блок (если 1, то да, елси 0, то нет)
 } Block;
@@ -27,6 +27,8 @@ typedef struct Game {
     Field* field;
     Figure* figure;
     Figures* figures;
+    int ticks;
+    int ticksLeft;
 } Game;
 
 // Создание игровых объектов
@@ -39,7 +41,7 @@ Figure* createNewFigure(Game* tetGame);
 void dropNewFigure(Game* tetGame);
 int collisionEnter(Game* tetGame);
 void plantFigure(Game* tetGame);
-
+void calculateTetris(Game* tetGame);
 // Освобождение памяти
 void freeFigureTet(Figure* f);
 void freeFiguresTet(Figures* f);

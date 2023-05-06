@@ -27,6 +27,10 @@ Game* createGame(int width, int height, int size, int count, Block* template)
     Game* tetrisGame = (Game*)malloc(sizeof(Game));
     tetrisGame->field = createField(width, height);
     tetrisGame->figures = createFigures(count, size, template);
+
+    tetrisGame->ticks = TICKS_START;
+    tetrisGame->ticksLeft = TICKS_START;
+
     return tetrisGame;
 }
 Figure* createNewFigure(Game* tetGame)
@@ -110,18 +114,24 @@ void plantFigure(Game* tetGame)
 }
 void calculateTetris(Game* tetGame) // Прочсет одного такта
 {
-    tetGame->figure->y++;
-    if (collisionEnter(tetGame)) {
-        tetGame->figure->y--;
-        plantFigure(tetGame);
-        dropNewFigure(tetGame);
-        if (collisionEnter(tetGame)) // если коллизия произошла вновь, то нет
-                                     // места, а следовательно игра окончена
-        {
-            // game over
-            return;
+    if (tetGame->ticksLeft <= 0) // Этот if замедляет игру
+    {
+        tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"
+        tetGame->figure->y++;
+        if (collisionEnter(tetGame)) {
+            tetGame->figure->y--;
+            plantFigure(tetGame);
+            dropNewFigure(tetGame);
+            if (collisionEnter(
+                        tetGame)) // если коллизия произошла вновь, то нет
+                                  // места, а следовательно игра окончена
+            {
+                // game over
+                return;
+            }
         }
     }
+    tetGame->ticksLeft--;
 }
 
 void freeFigureTet(Figure* f)

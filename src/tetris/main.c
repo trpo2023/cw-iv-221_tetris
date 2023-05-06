@@ -42,6 +42,7 @@ void printGame(Game* tetGame)
             printf("%d", symbol);
         }
     }
+    fflush(stdout);
 }
 int main()
 {

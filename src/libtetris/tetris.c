@@ -92,6 +92,22 @@ int collisionEnter(Game* tetGame)
     }
     return 0;
 }
+void plantFigure(Game* tetGame)
+{
+    Figure* t = tetGame->figure;
+    for (int i = 0; i < t->size; i++) {
+        // j - строка, i - столбец
+        for (int j = 0; j < t->size; j++) {
+            if (t->blocks[i * t->size + j].b != 0) {
+                // Размещение текущей фигуры на поле(выполняется при Collision)
+                int fx = t->x + j;
+                int fy = t->y + i;
+                tetGame->field->blocks[fy * tetGame->field->width + fx].b
+                        = t->blocks[i * t->size + j].b;
+            }
+        }
+    }
+}
 
 void freeFigureTet(Figure* f)
 {

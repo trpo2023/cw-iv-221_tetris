@@ -38,6 +38,7 @@ Figure* createNewFigure(Game* tetGame);
 // Основная логика игры
 void dropNewFigure(Game* tetGame);
 int collisionEnter(Game* tetGame);
+void plantFigure(Game* tetGame);
 
 // Освобождение памяти
 void freeFigureTet(Figure* f);

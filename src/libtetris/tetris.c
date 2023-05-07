@@ -151,48 +151,41 @@ void plantFigure(Game *tetGame) {
     }
 }
 
-void dropLine(int i, Field *tfl)
-{
-    if (i == 0) // Елси строка нулевая, то очищаем
-    {
-        for (int j = 0; j < tfl->width; j++)
-        {
+void dropLine(int i, Field *tfl) {
+    if (i == 0) { // Елси строка нулевая, то очищаем
+        for (int j = 0; j < tfl->width; j++) {
             tfl->blocks[j].b = 0;
         }
-    }
-    else // перенос строк ниже
-    {
-        for (int k = i; k > 0; k--)
-        {
-            for (int j = 0; j < tfl->width; j++)
-            {
+    } else { // перенос строк ниже
+        for (int k = i; k > 0; k--) {
+            for (int j = 0; j < tfl->width; j++) {
                 tfl->blocks[k * tfl->width + j].b = tfl->blocks[(k - 1) * tfl->width + j].b;
             }
         }
     }
 }
-int lineFilled(int i, Field *tfl) // Проверяет заполнена ли строка
-{
-    for (int j = 0; j < tfl->width; j++)
-    {
-        if (tfl->blocks[i * tfl->width + j].b == 0)
+
+int lineFilled(int i, Field *tfl) { // Проверяет заполнена ли строка
+    for (int j = 0; j < tfl->width; j++) {
+        if (tfl->blocks[i * tfl->width + j].b == 0) {
             return 0;
+        }
     }
+
     return 1;
 }
 
-int lineTetris(Game *tetGame) // удаляет заполнненые строки
-{
+int lineTetris(Game *tetGame) { // удаляет заполнненые строки
     Field *tfl = tetGame->field;
     int count = 0; // Подсчитывай количество полных строк
-    for (int i = tfl->height - 1; i >= 0; i--)
-    {
-        while (lineFilled(i, tfl))
-        {
+
+    for (int i = tfl->height - 1; i >= 0; i--) {
+        while (lineFilled(i, tfl)) {
             dropLine(i, tfl);
             count++;
         }
     }
+
     return count;
 }
 

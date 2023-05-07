@@ -63,6 +63,12 @@ Figure * rotateFigure(Game *tetGame);
 void dropNewFigure(Game *tetGame);
 int collisionEnter(Game *tetGame);
 void plantFigure(Game *tetGame);
+void dropLine(int i, Field *tfl);
+int lineFilled(int i, Field *tfl);
+int lineTetris(Game *tetGame);
+enum {
+    TET_GAMEOVER = 0, TET_PLAYING
+};
 void calculateTetris(Game *tetGame);
 // Освобождение памяти
 void freeFigureTet(Figure *f);

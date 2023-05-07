@@ -171,6 +171,15 @@ void dropLine(int i, Field *tfl)
         }
     }
 }
+int lineFilled(int i, Field *tfl) // Проверяет заполнена ли строка
+{
+    for (int j = 0; j < tfl->width; j++)
+    {
+        if (tfl->blocks[i * tfl->width + j].b == 0)
+            return 0;
+    }
+    return 1;
+}
 
 void calculateTetris(Game *tetGame) { // Прочсет одного такта
     if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру

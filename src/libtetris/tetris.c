@@ -151,6 +151,27 @@ void plantFigure(Game *tetGame) {
     }
 }
 
+void dropLine(int i, Field *tfl)
+{
+    if (i == 0) // Елси строка нулевая, то очищаем
+    {
+        for (int j = 0; j < tfl->width; j++)
+        {
+            tfl->blocks[j].b = 0;
+        }
+    }
+    else // перенос строк ниже
+    {
+        for (int k = i; k > 0; k--)
+        {
+            for (int j = 0; j < tfl->width; j++)
+            {
+                tfl->blocks[k * tfl->width + j].b = tfl->blocks[(k - 1) * tfl->width + j].b;
+            }
+        }
+    }
+}
+
 void calculateTetris(Game *tetGame) { // Прочсет одного такта
     if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру
         tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"

@@ -23,6 +23,9 @@ typedef struct Figures {
     Block* blocks;
 } Figures;
 
+//преречисления движений-7
+
+
 typedef struct Game {
     Field* field;
     Figure* figure;
@@ -35,7 +38,11 @@ typedef struct Game {
 Field* createField(int widthT, int heightT);
 Figures* createFigures(int countT, int sizeT, Block* templateT);
 Game* createGame(int width, int height, int count, int size, Block* template);
-Figure* createNewFigure(Game* tetGame);
+Figure *createNewFigure(Game *tetGame);
+
+//движения фигур-7
+
+
 
 // Основная логика игры
 void dropNewFigure(Game* tetGame);

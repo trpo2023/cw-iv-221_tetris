@@ -33,6 +33,41 @@ Game* createGame(int width, int height, int size, int count, Block* template)
 
     return tetrisGame;
 }
+
+void moveFigureDown(Game *tetGame)
+{
+    tetGame->figure->y++;
+}
+void moveFigureUp(Game *tetGame)
+{
+    tetGame->figure->y--;
+}
+void moveFigureRight(Game *tetGame)
+{
+    tetGame->figure->x++;
+}
+void moveFigureLeft(Game *tetGame)
+{
+    tetGame->figure->x--;
+}
+
+Figure *rotateFigure(Game *tetGame)
+{
+    Figure *t = createNewFigure(tetGame);
+    Figure *old = tetGame->figure;
+    t->x = old->x;
+    t->y = old->y;
+    for (int i = 0; i < t->size; i++)
+    {
+        for (int j = 0; j < t->size; j++)
+        {
+            t->blocks[i * t->size + j].b = old->blocks[j * t->size + t->size - 1 - i].b;
+        }
+    }
+    return t;
+}
+
+
 Figure* createNewFigure(Game* tetGame)
 {
     Figure* t = (Figure*)malloc(sizeof(Figure));

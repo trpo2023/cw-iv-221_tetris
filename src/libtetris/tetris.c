@@ -181,6 +181,21 @@ int lineFilled(int i, Field *tfl) // Проверяет заполнена ли 
     return 1;
 }
 
+int lineTetris(Game *tetGame) // удаляет заполнненые строки
+{
+    Field *tfl = tetGame->field;
+    int count = 0; // Подсчитывай количество полных строк
+    for (int i = tfl->height - 1; i >= 0; i--)
+    {
+        while (lineFilled(i, tfl))
+        {
+            dropLine(i, tfl);
+            count++;
+        }
+    }
+    return count;
+}
+
 void calculateTetris(Game *tetGame) { // Прочсет одного такта
     if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру
         tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"

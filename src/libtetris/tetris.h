@@ -24,6 +24,18 @@ typedef struct Figures {
 } Figures;
 
 //преречисления движений-7
+enum
+{
+  PLAYER_NON = 0,
+  PLAYER_UP,
+  PLAYER_DOWN,
+  PLAYER_LEFT,
+  PLAYER_RIGHT
+};
+typedef struct Player
+{
+  int action;
+} Player;
 
 
 typedef struct Game {
@@ -41,8 +53,13 @@ Game* createGame(int width, int height, int count, int size, Block* template);
 Figure *createNewFigure(Game *tetGame);
 
 //движения фигур-7
-
-
+//движения фигур (прототипы)
+void moveFigureDown(Game *tetGame);
+void moveFigureUp(Game *tetGame);
+void moveFigureRight(Game *tetGame);
+void moveFigureLeft(Game *tetGame);
+int collisionEnter(Game *tetGame);
+Figure *rotateFigure(Game *tetGame);
 
 // Основная логика игры
 void dropNewFigure(Game* tetGame);

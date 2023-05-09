@@ -5,6 +5,9 @@ Game* createGame(int width, int height, int size, int count, Block* template)
 {
     Game* tetrisGame = (Game*)malloc(sizeof(Game));
 
+    if (tetrisGame == NULL)
+        return NULL;
+
     tetrisGame->field = createField(width, height);
     tetrisGame->figures = createFigures(count, size, template);
 
@@ -19,9 +22,15 @@ Field* createField(int widthT, int heightT)
 {
     Field* tetrisField = (Field*)malloc(sizeof(Field));
 
+    if (tetrisField == NULL)
+        return NULL;
+
     tetrisField->width = widthT;
     tetrisField->height = heightT;
     tetrisField->blocks = (Block*)malloc(sizeof(Block) * widthT * heightT);
+
+    if (tetrisField->blocks == NULL)
+        return NULL;
 
     for (int i = 0; i < widthT * heightT; i++) {
         tetrisField->blocks[i].b = 0;
@@ -33,6 +42,9 @@ Figures* createFigures(int countF, int sizeF, Block* templateF)
 {
     Figures* tetrisFigures = (Figures*)malloc(sizeof(Figures));
 
+    if (tetrisFigures == NULL)
+        return NULL;
+
     tetrisFigures->blocks = templateF;
     tetrisFigures->count = countF;
     tetrisFigures->size = sizeF;
@@ -43,10 +55,17 @@ Figure* createNewFigure(Game* tetGame)
 {
     Figure* t = (Figure*)malloc(sizeof(Figure));
 
+    if (t == NULL)
+        return NULL;
+
     t->x = 0;
     t->y = 0;
     t->size = tetGame->figures->size;
     t->blocks = (Block*)malloc(sizeof(Block) * t->size * t->size);
+
+    if (t->blocks == NULL)
+        return NULL;
+
     return t;
 }
 // Движение

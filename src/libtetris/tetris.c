@@ -3,7 +3,7 @@
 
 #include "tetris.h"
 // Создание
-Game* createGame(int width, int height, int size, int count, Block* template)
+Game* createGame(int width, int height, int size, int count, Block* template, int speed)
 {
     Game* tetrisGame = (Game*)malloc(sizeof(Game));
 
@@ -13,8 +13,8 @@ Game* createGame(int width, int height, int size, int count, Block* template)
     tetrisGame->field = createField(width, height);
     tetrisGame->figures = createFigures(count, size, template);
 
-    tetrisGame->ticks = TICKS_START;
-    tetrisGame->ticksLeft = TICKS_START;
+    tetrisGame->ticks = speed;
+    tetrisGame->ticksLeft = speed;
 
     tetrisGame->score = 0;
     tetrisGame->playing = TET_PLAYING;

@@ -69,7 +69,7 @@ int main() {
     player.action = PLAYER_NON;
     tetGame->player = &player;
     dropNewFigure(tetGame);
-    while ((ch = getchar()) != 'q'){
+    while (tetGame->playing != TET_GAMEOVER){
 
         clock_gettime(CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
 
@@ -92,7 +92,7 @@ int main() {
                 break;
 
             /*
-               case 'p':
+               case 'p': предположительно реализация меню паузы
                ...
              */
             default:
@@ -100,7 +100,22 @@ int main() {
                 break;
         }
     
+        calculateTetris(tetGame);
+        printGame(tetGame);
+
+        attron(COLOR_PAIR(1));
+        mvprintw(0, 0, "Score: %d", tetGame->score);
+        move(tetGame->field->height + 1, tetGame->field->width + 1);
+        attroff(COLOR_PAIR(1));
+
+        refresh();
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        if (end.tv_sec - start.tv_sec <= 0 && (ts2.tv_nsec = 33000000 - (end.tv_nsec - start.tv_nsec)) > 0)
+        {
+            nanosleep(&ts2, &ts1);
+        }
     }
     freeGameTet(tetGame);
+    endwin();
     return 0;
 }

@@ -1,7 +1,10 @@
-#include <libtetris/tetris.h>
-#include <ncurses.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
+
+#include <ncurses.h>
+
+#include <libtetris/tetris.h>
 Block templates[] = {0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
 
@@ -26,7 +29,7 @@ void printGame(Game* tetGame)
 
     for (int i = 0; i < tf->height; i++) {
         for (int j = 0; j < tf->width; j++) {
-            int symbol = 0;
+            int symbol = 1;
 
             if (tf->blocks[i * tf->width + j].b
                 != 0) { // Если текущий блок не пуст, то выводим его на экран
@@ -48,8 +51,20 @@ void printGame(Game* tetGame)
     }
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    int width = 25;
+    int height = 25;
+    int speed = 45;
+    if (argc == 4) {
+        if (atoi(argv[1]) != 0)
+            width = atoi(argv[1]);
+        if (atoi(argv[2]) != 0)
+            height = atoi(argv[2]);
+        if (atoi(argv[3]) != 0)
+            speed = atoi(argv[3]);
+    }
+
     struct timespec start, end, ts1, ts2 = {0, 0};
 
     initscr();
@@ -61,7 +76,7 @@ int main()
     nodelay(stdscr, TRUE);
     scrollok(stdscr, TRUE);
 
-    Game* tetGame = createGame(34, 30, 5, 6, templates);
+    Game* tetGame = createGame(width, height, 5, 6, templates, speed);
 
     Player player;
     player.action = PLAYER_NON;
@@ -89,10 +104,14 @@ int main()
             player.action = PLAYER_RIGHT;
             break;
 
-        /*
-           case 'p': предположительно реализация меню паузы
-           ...
-         */
+        case 'q':
+            tetGame->playing = TET_GAMEOVER;
+            break;
+
+        case 'p':
+            getchar();
+            break;
+
         default:
             player.action = PLAYER_NON;
             break;

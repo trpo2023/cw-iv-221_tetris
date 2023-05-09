@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-
+#include <ncurses.h>
 #include <libtetris/tetris.h>
 Block templates[] = {
     0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
@@ -31,44 +31,49 @@ void printGame(Game *tetGame) {
 
             if (tf->blocks[i * tf->width + j].b
                 != 0) { // Если текущий блок не пуст, то выводим его на экран
-                symbol = 1;
+                symbol = 2;
             } else {
                 int x = j - t->x;
                 int y = i - t->y;
 
                 if (x >= 0 && x < t->size && y >= 0 && y < t->size) {
                     if (t->blocks[y * t->size + x].b != 0) {
-                        symbol = 1;
+                        symbol = 2;
                     }
                 }
             }
-
-            printf("%d", symbol);
+            attron(COLOR_PAIR(symbol));
+            mvaddch(i, j, ' ');
+            attroff(COLOR_PAIR(symbol));
         }
     }
-
-    fflush(stdout);
 }
 
 
 int main() {
     
-    
+    struct timespec start, end, ts1, ts2 = {0, 0};
+
+    initscr();
+    start_color();
+    init_pair(1, COLOR_WHITE, COLOR_MAGENTA);
+    init_pair(2, COLOR_GREEN, COLOR_GREEN);
+    cbreak();
+    noecho();
+    nodelay(stdscr, TRUE);
+    scrollok(stdscr, TRUE);
     
     Game *tetGame = createGame(34, 30, 5, 6, templates);
 
-    dropNewFigure(tetGame);
-
-    while (1) {
-        calculateTetris(tetGame);
-        printGame(tetGame);
-    }
     Player player;
     player.action = PLAYER_NON;
     tetGame->player = &player;
-    char ch;
-    while ((ch = getchar()) != 'q')
+    dropNewFigure(tetGame);
+    while ((ch = getchar()) != 'q'){
 
+        clock_gettime(CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
+
+        int ch = getch();
         switch (ch) {
             case 'w':
                 player.action = PLAYER_UP;
@@ -95,6 +100,7 @@ int main() {
                 break;
         }
     
+    }
     freeGameTet(tetGame);
     return 0;
 }

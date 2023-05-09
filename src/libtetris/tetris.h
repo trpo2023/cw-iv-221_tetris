@@ -31,17 +31,21 @@ enum {
     PLAYER_LEFT,
     PLAYER_RIGHT
 };
-typedef struct Player {
+typedef struct player {
     int action;
 } Player;
 
 
-typedef struct Game {
-    Field *field;
-    Figure *figure;
-    Figures *figures;
-    int ticks;
-    int ticksLeft;
+typedef struct Game
+{
+  Field *field;
+  Figure *figure;
+  Figures *figures;
+  Player *player;
+  int ticks;
+  int ticksLeft;
+  int score;
+  int playing;
 } Game;
 
 // Создание игровых объектов

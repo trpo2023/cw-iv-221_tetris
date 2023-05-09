@@ -50,42 +50,11 @@ void printGame(Game *tetGame) {
     fflush(stdout);
 }
 
-Player player;
-player.action = PLAYER_NON;
-tetGame->player = &player;
-
-
-int ch;
-
-while ((ch = getcha()) != q)
-
-    switch (ch) {
-        case 'w':
-            player.action = PLAYER_UP;
-            break;
-
-        case 's':
-            player.action = PLAYER_DOWN;
-            break;
-
-        case 'a':
-            player.action = PLAYER_LEFT;
-            break;
-
-        case 'd':
-            player.action = PLAYER_RIGHT;
-            break;
-
-        /*
-           case 'p':
-           ...
-         */
-        default:
-            player.action = PLAYER_NON;
-            break;
-    }
 
 int main() {
+    
+    
+    
     Game *tetGame = createGame(34, 30, 5, 6, templates);
 
     dropNewFigure(tetGame);
@@ -94,6 +63,38 @@ int main() {
         calculateTetris(tetGame);
         printGame(tetGame);
     }
+    Player player;
+    player.action = PLAYER_NON;
+    tetGame->player = &player;
+    char ch;
+    while ((ch = getchar()) != 'q')
+
+        switch (ch) {
+            case 'w':
+                player.action = PLAYER_UP;
+                break;
+
+            case 's':
+                player.action = PLAYER_DOWN;
+                break;
+
+            case 'a':
+                player.action = PLAYER_LEFT;
+                break;
+
+            case 'd':
+                player.action = PLAYER_RIGHT;
+                break;
+
+            /*
+               case 'p':
+               ...
+             */
+            default:
+                player.action = PLAYER_NON;
+                break;
+        }
+    
     freeGameTet(tetGame);
     return 0;
 }

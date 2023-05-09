@@ -1,6 +1,18 @@
 #include "tetris.h"
 #include <stdlib.h>
 
+Game* createGame(int width, int height, int size, int count, Block* template)
+{
+    Game* tetrisGame = (Game*)malloc(sizeof(Game));
+
+    tetrisGame->field = createField(width, height);
+    tetrisGame->figures = createFigures(count, size, template);
+
+    tetrisGame->ticks = TICKS_START;
+    tetrisGame->ticksLeft = TICKS_START;
+
+    return tetrisGame;
+}
 Field* createField(int widthT, int heightT)
 {
     Field* tetrisField = (Field*)malloc(sizeof(Field));
@@ -15,7 +27,6 @@ Field* createField(int widthT, int heightT)
 
     return tetrisField;
 }
-
 Figures* createFigures(int countF, int sizeF, Block* templateF)
 {
     Figures* tetrisFigures = (Figures*)malloc(sizeof(Figures));
@@ -26,40 +37,33 @@ Figures* createFigures(int countF, int sizeF, Block* templateF)
 
     return tetrisFigures;
 }
-
-Game* createGame(int width, int height, int size, int count, Block* template)
+Figure* createNewFigure(Game* tetGame)
 {
-    Game* tetrisGame = (Game*)malloc(sizeof(Game));
+    Figure* t = (Figure*)malloc(sizeof(Figure));
 
-    tetrisGame->field = createField(width, height);
-    tetrisGame->figures = createFigures(count, size, template);
-
-    tetrisGame->ticks = TICKS_START;
-    tetrisGame->ticksLeft = TICKS_START;
-
-    return tetrisGame;
+    t->x = 0;
+    t->y = 0;
+    t->size = tetGame->figures->size;
+    t->blocks = (Block*)malloc(sizeof(Block) * t->size * t->size);
+    return t;
 }
 
 void moveFigureDown(Game* tetGame)
 {
     tetGame->figure->y++;
 }
-
 void moveFigureUp(Game* tetGame)
 {
     tetGame->figure->y--;
 }
-
 void moveFigureRight(Game* tetGame)
 {
     tetGame->figure->x++;
 }
-
 void moveFigureLeft(Game* tetGame)
 {
     tetGame->figure->x--;
 }
-
 Figure* rotateFigure(Game* tetGame)
 {
     Figure* t = createNewFigure(tetGame);
@@ -78,17 +82,28 @@ Figure* rotateFigure(Game* tetGame)
     return t;
 }
 
-Figure* createNewFigure(Game* tetGame)
-{
-    Figure* t = (Figure*)malloc(sizeof(Figure));
+void calculateTetris(Game* tetGame)
+{                                  // Прочсет одного такта
+    if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру
+        tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"
+        tetGame->figure->y++;
 
-    t->x = 0;
-    t->y = 0;
-    t->size = tetGame->figures->size;
-    t->blocks = (Block*)malloc(sizeof(Block) * t->size * t->size);
-    return t;
+        if (collisionEnter(tetGame)) {
+            tetGame->figure->y--;
+            plantFigure(tetGame);
+            dropNewFigure(tetGame);
+
+            if (collisionEnter(
+                        tetGame)) { // если коллизия произошла вновь, то нет
+                                    // места, а следовательно игра окончена
+                // game over
+                return;
+            }
+        }
+    }
+
+    tetGame->ticksLeft--;
 }
-
 void dropNewFigure(Game* tetGame)
 {
     Figure* t = createNewFigure(tetGame);
@@ -118,7 +133,6 @@ void dropNewFigure(Game* tetGame)
     freeFigureTet(tetGame->figure);
     tetGame->figure = t;
 }
-
 int collisionEnter(Game* tetGame)
 {
     Figure* t = tetGame->figure;
@@ -145,7 +159,6 @@ int collisionEnter(Game* tetGame)
 
     return 0;
 }
-
 void plantFigure(Game* tetGame)
 {
     Figure* t = tetGame->figure;
@@ -179,7 +192,6 @@ void dropLine(int i, Field* tfl)
         }
     }
 }
-
 int lineFilled(int i, Field* tfl)
 { // Проверяет заполнена ли строка
     for (int j = 0; j < tfl->width; j++) {
@@ -190,7 +202,6 @@ int lineFilled(int i, Field* tfl)
 
     return 1;
 }
-
 int lineTetris(Game* tetGame)
 { // удаляет заполнненые строки
     Field* tfl = tetGame->field;
@@ -206,29 +217,6 @@ int lineTetris(Game* tetGame)
     return count;
 }
 
-void calculateTetris(Game* tetGame)
-{                                  // Прочсет одного такта
-    if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру
-        tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"
-        tetGame->figure->y++;
-
-        if (collisionEnter(tetGame)) {
-            tetGame->figure->y--;
-            plantFigure(tetGame);
-            dropNewFigure(tetGame);
-
-            if (collisionEnter(
-                        tetGame)) { // если коллизия произошла вновь, то нет
-                                    // места, а следовательно игра окончена
-                // game over
-                return;
-            }
-        }
-    }
-
-    tetGame->ticksLeft--;
-}
-
 void freeFigureTet(Figure* f)
 {
     if (f != NULL) {
@@ -237,12 +225,10 @@ void freeFigureTet(Figure* f)
 
     free(f);
 }
-
 void freeFiguresTet(Figures* f)
 {
     free(f);
 }
-
 void freeFieldTet(Field* f)
 {
     if (f != NULL) {
@@ -251,7 +237,6 @@ void freeFieldTet(Field* f)
 
     free(f);
 }
-
 void freeGameTet(Game* g)
 {
     if (g != NULL) {

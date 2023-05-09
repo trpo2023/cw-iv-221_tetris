@@ -52,18 +52,20 @@ void moveFigureDown(Game* tetGame);
 void moveFigureUp(Game* tetGame);
 void moveFigureRight(Game* tetGame);
 void moveFigureLeft(Game* tetGame);
-int collisionEnter(Game* tetGame);
 Figure* rotateFigure(Game* tetGame);
 
 // Основная логика игры
+void calculateTetris(Game* tetGame);
 void dropNewFigure(Game* tetGame);
 int collisionEnter(Game* tetGame);
 void plantFigure(Game* tetGame);
+
+//очки
 void dropLine(int i, Field* tfl);
 int lineFilled(int i, Field* tfl);
 int lineTetris(Game* tetGame);
 enum { TET_GAMEOVER = 0, TET_PLAYING };
-void calculateTetris(Game* tetGame);
+
 // Освобождение памяти
 void freeFigureTet(Figure* f);
 void freeFiguresTet(Figures* f);

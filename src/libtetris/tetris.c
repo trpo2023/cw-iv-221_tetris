@@ -1,12 +1,13 @@
-#include <stdlib.h>
 #include "tetris.h"
+#include <stdlib.h>
 
-Field * createField(int widthT, int heightT) {
-    Field *tetrisField = (Field *)malloc(sizeof(Field));
+Field* createField(int widthT, int heightT)
+{
+    Field* tetrisField = (Field*)malloc(sizeof(Field));
 
     tetrisField->width = widthT;
     tetrisField->height = heightT;
-    tetrisField->blocks = (Block *)malloc(sizeof(Block) * widthT * heightT);
+    tetrisField->blocks = (Block*)malloc(sizeof(Block) * widthT * heightT);
 
     for (int i = 0; i < widthT * heightT; i++) {
         tetrisField->blocks[i].b = 0;
@@ -15,8 +16,9 @@ Field * createField(int widthT, int heightT) {
     return tetrisField;
 }
 
-Figures * createFigures(int countF, int sizeF, Block *templateF) {
-    Figures *tetrisFigures = (Figures *)malloc(sizeof(Figures));
+Figures* createFigures(int countF, int sizeF, Block* templateF)
+{
+    Figures* tetrisFigures = (Figures*)malloc(sizeof(Figures));
 
     tetrisFigures->blocks = templateF;
     tetrisFigures->count = countF;
@@ -25,8 +27,9 @@ Figures * createFigures(int countF, int sizeF, Block *templateF) {
     return tetrisFigures;
 }
 
-Game * createGame(int width, int height, int size, int count, Block *template) {
-    Game *tetrisGame = (Game *)malloc(sizeof(Game));
+Game* createGame(int width, int height, int size, int count, Block* template)
+{
+    Game* tetrisGame = (Game*)malloc(sizeof(Game));
 
     tetrisGame->field = createField(width, height);
     tetrisGame->figures = createFigures(count, size, template);
@@ -37,53 +40,61 @@ Game * createGame(int width, int height, int size, int count, Block *template) {
     return tetrisGame;
 }
 
-void moveFigureDown(Game *tetGame) {
+void moveFigureDown(Game* tetGame)
+{
     tetGame->figure->y++;
 }
 
-void moveFigureUp(Game *tetGame) {
+void moveFigureUp(Game* tetGame)
+{
     tetGame->figure->y--;
 }
 
-void moveFigureRight(Game *tetGame) {
+void moveFigureRight(Game* tetGame)
+{
     tetGame->figure->x++;
 }
 
-void moveFigureLeft(Game *tetGame) {
+void moveFigureLeft(Game* tetGame)
+{
     tetGame->figure->x--;
 }
 
-Figure * rotateFigure(Game *tetGame) {
-    Figure *t = createNewFigure(tetGame);
-    Figure *old = tetGame->figure;
+Figure* rotateFigure(Game* tetGame)
+{
+    Figure* t = createNewFigure(tetGame);
+    Figure* old = tetGame->figure;
 
     t->x = old->x;
     t->y = old->y;
 
     for (int i = 0; i < t->size; i++) {
         for (int j = 0; j < t->size; j++) {
-            t->blocks[i * t->size + j].b = old->blocks[j * t->size + t->size - 1 - i].b;
+            t->blocks[i * t->size + j].b
+                    = old->blocks[j * t->size + t->size - 1 - i].b;
         }
     }
 
     return t;
 }
 
-Figure * createNewFigure(Game *tetGame) {
-    Figure *t = (Figure *)malloc(sizeof(Figure));
+Figure* createNewFigure(Game* tetGame)
+{
+    Figure* t = (Figure*)malloc(sizeof(Figure));
 
     t->x = 0;
     t->y = 0;
     t->size = tetGame->figures->size;
-    t->blocks = (Block *)malloc(sizeof(Block) * t->size * t->size);
+    t->blocks = (Block*)malloc(sizeof(Block) * t->size * t->size);
     return t;
 }
 
-void dropNewFigure(Game *tetGame) {
-    Figure *t = createNewFigure(tetGame);
+void dropNewFigure(Game* tetGame)
+{
+    Figure* t = createNewFigure(tetGame);
 
     t->x = tetGame->field->width / 2
-        - t->size / 2;     // Поставить фигуру по середине
+            - t->size / 2; // Поставить фигуру по середине
     t->y = 0;
 
     // Выбрать рандомную фигуру из списка templates()
@@ -95,11 +106,11 @@ void dropNewFigure(Game *tetGame) {
             // фигур(templates), т.е. t - это текущая фигура
 
             t->blocks[i * t->size + j].b
-                = tetGame->figures
-                    ->blocks
-                    [fnum * t->size * t->size + i * t->size
-                     + j]
-                    .b;
+                    = tetGame->figures
+                              ->blocks
+                                      [fnum * t->size * t->size + i * t->size
+                                       + j]
+                              .b;
         }
     }
 
@@ -108,9 +119,10 @@ void dropNewFigure(Game *tetGame) {
     tetGame->figure = t;
 }
 
-int collisionEnter(Game *tetGame) {
-    Figure *t = tetGame->figure;
-    Field *tf = tetGame->field;
+int collisionEnter(Game* tetGame)
+{
+    Figure* t = tetGame->figure;
+    Field* tf = tetGame->field;
 
     for (int i = 0; i < t->size; i++) { // i - y, j - x
         for (int j = 0; j < t->size; j++) {
@@ -134,8 +146,9 @@ int collisionEnter(Game *tetGame) {
     return 0;
 }
 
-void plantFigure(Game *tetGame) {
-    Figure *t = tetGame->figure;
+void plantFigure(Game* tetGame)
+{
+    Figure* t = tetGame->figure;
 
     for (int i = 0; i < t->size; i++) {
         // j - строка, i - столбец
@@ -145,13 +158,14 @@ void plantFigure(Game *tetGame) {
                 int fx = t->x + j;
                 int fy = t->y + i;
                 tetGame->field->blocks[fy * tetGame->field->width + fx].b
-                    = t->blocks[i * t->size + j].b;
+                        = t->blocks[i * t->size + j].b;
             }
         }
     }
 }
 
-void dropLine(int i, Field *tfl) {
+void dropLine(int i, Field* tfl)
+{
     if (i == 0) { // Елси строка нулевая, то очищаем
         for (int j = 0; j < tfl->width; j++) {
             tfl->blocks[j].b = 0;
@@ -159,13 +173,15 @@ void dropLine(int i, Field *tfl) {
     } else { // перенос строк ниже
         for (int k = i; k > 0; k--) {
             for (int j = 0; j < tfl->width; j++) {
-                tfl->blocks[k * tfl->width + j].b = tfl->blocks[(k - 1) * tfl->width + j].b;
+                tfl->blocks[k * tfl->width + j].b
+                        = tfl->blocks[(k - 1) * tfl->width + j].b;
             }
         }
     }
 }
 
-int lineFilled(int i, Field *tfl) { // Проверяет заполнена ли строка
+int lineFilled(int i, Field* tfl)
+{ // Проверяет заполнена ли строка
     for (int j = 0; j < tfl->width; j++) {
         if (tfl->blocks[i * tfl->width + j].b == 0) {
             return 0;
@@ -175,8 +191,9 @@ int lineFilled(int i, Field *tfl) { // Проверяет заполнена л�
     return 1;
 }
 
-int lineTetris(Game *tetGame) { // удаляет заполнненые строки
-    Field *tfl = tetGame->field;
+int lineTetris(Game* tetGame)
+{ // удаляет заполнненые строки
+    Field* tfl = tetGame->field;
     int count = 0; // Подсчитывай количество полных строк
 
     for (int i = tfl->height - 1; i >= 0; i--) {
@@ -189,7 +206,8 @@ int lineTetris(Game *tetGame) { // удаляет заполнненые стр�
     return count;
 }
 
-void calculateTetris(Game *tetGame) { // Прочсет одного такта
+void calculateTetris(Game* tetGame)
+{                                  // Прочсет одного такта
     if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру
         tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"
         tetGame->figure->y++;
@@ -200,8 +218,8 @@ void calculateTetris(Game *tetGame) { // Прочсет одного такта
             dropNewFigure(tetGame);
 
             if (collisionEnter(
-                    tetGame)) {   // если коллизия произошла вновь, то нет
-                                  // места, а следовательно игра окончена
+                        tetGame)) { // если коллизия произошла вновь, то нет
+                                    // места, а следовательно игра окончена
                 // game over
                 return;
             }
@@ -211,7 +229,8 @@ void calculateTetris(Game *tetGame) { // Прочсет одного такта
     tetGame->ticksLeft--;
 }
 
-void freeFigureTet(Figure *f) {
+void freeFigureTet(Figure* f)
+{
     if (f != NULL) {
         free(f->blocks);
     }
@@ -219,11 +238,13 @@ void freeFigureTet(Figure *f) {
     free(f);
 }
 
-void freeFiguresTet(Figures *f) {
+void freeFiguresTet(Figures* f)
+{
     free(f);
 }
 
-void freeFieldTet(Field *f) {
+void freeFieldTet(Field* f)
+{
     if (f != NULL) {
         free(f->blocks);
     }
@@ -231,7 +252,8 @@ void freeFieldTet(Field *f) {
     free(f);
 }
 
-void freeGameTet(Game *g) {
+void freeGameTet(Game* g)
+{
     if (g != NULL) {
         freeFieldTet(g->field);
         freeFiguresTet(g->figures);

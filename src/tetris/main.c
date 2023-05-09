@@ -1,29 +1,28 @@
+#include <libtetris/tetris.h>
+#include <ncurses.h>
 #include <stdio.h>
 #include <time.h>
-#include <ncurses.h>
-#include <libtetris/tetris.h>
-Block templates[] = {
-    0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+Block templates[] = {0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+                     0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
 
-    0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
-    0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1,
+                     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
 
-    0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
+                     0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
 
-    0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,
+                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
-    0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-};
-void printGame(Game *tetGame) {
-    Field *tf = tetGame->field;
-    Figure *t = tetGame->figure;
+                     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
+                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+void printGame(Game* tetGame)
+{
+    Field* tf = tetGame->field;
+    Figure* t = tetGame->figure;
 
     for (int i = 0; i < tf->height; i++) {
         for (int j = 0; j < tf->width; j++) {
@@ -49,9 +48,8 @@ void printGame(Game *tetGame) {
     }
 }
 
-
-int main() {
-    
+int main()
+{
     struct timespec start, end, ts1, ts2 = {0, 0};
 
     initscr();
@@ -62,44 +60,44 @@ int main() {
     noecho();
     nodelay(stdscr, TRUE);
     scrollok(stdscr, TRUE);
-    
-    Game *tetGame = createGame(34, 30, 5, 6, templates);
+
+    Game* tetGame = createGame(34, 30, 5, 6, templates);
 
     Player player;
     player.action = PLAYER_NON;
     tetGame->player = &player;
     dropNewFigure(tetGame);
-    while (tetGame->playing != TET_GAMEOVER){
-
-        clock_gettime(CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
+    while (tetGame->playing != TET_GAMEOVER) {
+        clock_gettime(
+                CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
 
         int ch = getch();
         switch (ch) {
-            case 'w':
-                player.action = PLAYER_UP;
-                break;
+        case 'w':
+            player.action = PLAYER_UP;
+            break;
 
-            case 's':
-                player.action = PLAYER_DOWN;
-                break;
+        case 's':
+            player.action = PLAYER_DOWN;
+            break;
 
-            case 'a':
-                player.action = PLAYER_LEFT;
-                break;
+        case 'a':
+            player.action = PLAYER_LEFT;
+            break;
 
-            case 'd':
-                player.action = PLAYER_RIGHT;
-                break;
+        case 'd':
+            player.action = PLAYER_RIGHT;
+            break;
 
-            /*
-               case 'p': предположительно реализация меню паузы
-               ...
-             */
-            default:
-                player.action = PLAYER_NON;
-                break;
+        /*
+           case 'p': предположительно реализация меню паузы
+           ...
+         */
+        default:
+            player.action = PLAYER_NON;
+            break;
         }
-    
+
         calculateTetris(tetGame);
         printGame(tetGame);
 
@@ -110,8 +108,8 @@ int main() {
 
         refresh();
         clock_gettime(CLOCK_MONOTONIC, &end);
-        if (end.tv_sec - start.tv_sec <= 0 && (ts2.tv_nsec = 33000000 - (end.tv_nsec - start.tv_nsec)) > 0)
-        {
+        if (end.tv_sec - start.tv_sec <= 0
+            && (ts2.tv_nsec = 33000000 - (end.tv_nsec - start.tv_nsec)) > 0) {
             nanosleep(&ts2, &ts1);
         }
     }

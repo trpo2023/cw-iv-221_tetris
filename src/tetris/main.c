@@ -1,7 +1,8 @@
-#include <libtetris/tetris.h>
 #include <ncurses.h>
 #include <stdio.h>
 #include <time.h>
+
+#include <libtetris/tetris.h>
 Block templates[] = {0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
                      0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
 
@@ -89,10 +90,14 @@ int main()
             player.action = PLAYER_RIGHT;
             break;
 
-        /*
-           case 'p': предположительно реализация меню паузы
-           ...
-         */
+        case 'q':
+            tetGame->playing = TET_GAMEOVER;
+            break;
+
+        case 'p':
+            getchar();
+            break;
+
         default:
             player.action = PLAYER_NON;
             break;

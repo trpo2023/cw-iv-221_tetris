@@ -1,5 +1,7 @@
-#include "tetris.h"
+
 #include <stdlib.h>
+
+#include "tetris.h"
 // Создание
 Game* createGame(int width, int height, int size, int count, Block* template)
 {

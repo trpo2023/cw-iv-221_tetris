@@ -3,7 +3,8 @@
 
 #include "tetris.h"
 // Создание
-Game* createGame(int width, int height, int size, int count, Block* template, int speed)
+Game* createGame(
+        int width, int height, int size, int count, Block* template, int speed)
 {
     Game* tetrisGame = (Game*)malloc(sizeof(Game));
 

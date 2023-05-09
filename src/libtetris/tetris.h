@@ -42,7 +42,8 @@ typedef struct Game {
 // Создание игровых объектов
 Field* createField(int widthT, int heightT);
 Figures* createFigures(int countT, int sizeT, Block* templateT);
-Game* createGame(int width, int height, int count, int size, Block* template, int speed);
+Game* createGame(
+        int width, int height, int count, int size, Block* template, int speed);
 Figure* createNewFigure(Game* tetGame);
 
 // движения фигур-7

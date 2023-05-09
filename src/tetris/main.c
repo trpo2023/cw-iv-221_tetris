@@ -26,7 +26,7 @@ void printGame(Game* tetGame)
 
     for (int i = 0; i < tf->height; i++) {
         for (int j = 0; j < tf->width; j++) {
-            int symbol = 0;
+            int symbol = 1;
 
             if (tf->blocks[i * tf->width + j].b
                 != 0) { // Если текущий блок не пуст, то выводим его на экран

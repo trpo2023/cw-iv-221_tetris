@@ -1,6 +1,6 @@
 #include "tetris.h"
 #include <stdlib.h>
-
+// Создание
 Game* createGame(int width, int height, int size, int count, Block* template)
 {
     Game* tetrisGame = (Game*)malloc(sizeof(Game));
@@ -11,6 +11,8 @@ Game* createGame(int width, int height, int size, int count, Block* template)
     tetrisGame->ticks = TICKS_START;
     tetrisGame->ticksLeft = TICKS_START;
 
+    tetrisGame->score = 0;
+    tetrisGame->playing = TET_PLAYING;
     return tetrisGame;
 }
 Field* createField(int widthT, int heightT)
@@ -47,7 +49,7 @@ Figure* createNewFigure(Game* tetGame)
     t->blocks = (Block*)malloc(sizeof(Block) * t->size * t->size);
     return t;
 }
-
+// Движение
 void moveFigureDown(Game* tetGame)
 {
     tetGame->figure->y++;
@@ -81,27 +83,58 @@ Figure* rotateFigure(Game* tetGame)
 
     return t;
 }
-
+// Логика
 void calculateTetris(Game* tetGame)
 {                                  // Прочсет одного такта
     if (tetGame->ticksLeft <= 0) { // Этот if замедляет игру
         tetGame->ticksLeft = tetGame->ticks; // Возобновляем "таймер"
-        tetGame->figure->y++;
+        moveFigureDown(tetGame);
 
         if (collisionEnter(tetGame)) {
-            tetGame->figure->y--;
+            moveFigureUp(tetGame);
             plantFigure(tetGame);
+            tetGame->score += lineTetris(tetGame);
             dropNewFigure(tetGame);
 
             if (collisionEnter(
                         tetGame)) { // если коллизия произошла вновь, то нет
                                     // места, а следовательно игра окончена
-                // game over
+                tetGame->playing = TET_GAMEOVER;
                 return;
             }
         }
     }
-
+    switch (tetGame->player->action) {
+    case PLAYER_DOWN:
+        moveFigureDown(tetGame);
+        if (collisionEnter(tetGame))
+            moveFigureUp(tetGame);
+        break;
+    case PLAYER_UP:
+        Figure* t = rotateFigure(tetGame);
+        Figure* old = tetGame->figure;
+        tetGame->figure = t;
+        if (collisionEnter(tetGame)) {
+            tetGame->figure = old;
+            freeFigureTet(t);
+        } else {
+            freeFigureTet(old);
+        }
+        break;
+    case PLAYER_LEFT:
+        moveFigureLeft(tetGame);
+        if (collisionEnter(tetGame))
+            moveFigureRight(tetGame);
+        break;
+    case PLAYER_RIGHT:
+        moveFigureRight(tetGame);
+        if (collisionEnter(tetGame))
+            moveFigureLeft(tetGame);
+        break;
+    case PLAYER_NON:
+    default:
+        break;
+    }
     tetGame->ticksLeft--;
 }
 void dropNewFigure(Game* tetGame)
@@ -176,7 +209,7 @@ void plantFigure(Game* tetGame)
         }
     }
 }
-
+// Подсчет очков
 void dropLine(int i, Field* tfl)
 {
     if (i == 0) { // Елси строка нулевая, то очищаем
@@ -192,8 +225,8 @@ void dropLine(int i, Field* tfl)
         }
     }
 }
-int lineFilled(int i, Field* tfl)
-{ // Проверяет заполнена ли строка
+int lineFilled(int i, Field* tfl) // Проверяет заполнена ли строка
+{
     for (int j = 0; j < tfl->width; j++) {
         if (tfl->blocks[i * tfl->width + j].b == 0) {
             return 0;
@@ -202,8 +235,8 @@ int lineFilled(int i, Field* tfl)
 
     return 1;
 }
-int lineTetris(Game* tetGame)
-{ // удаляет заполнненые строки
+int lineTetris(Game* tetGame) // удаляет заполнненые строки
+{
     Field* tfl = tetGame->field;
     int count = 0; // Подсчитывай количество полных строк
 
@@ -216,7 +249,7 @@ int lineTetris(Game* tetGame)
 
     return count;
 }
-
+// Освобождение памяти
 void freeFigureTet(Figure* f)
 {
     if (f != NULL) {

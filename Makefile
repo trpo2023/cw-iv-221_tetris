@@ -5,6 +5,8 @@ LIB_NAME = libtetris
 NSESFLAS = -lncurses
 CFLAGS = -Wall -g -O0
 DOPFLAGS = -I src -MMD
+GDBFLAGS = -g -O0
+
 
 BIN_DIR = bin
 OBJ_DIR = obj
@@ -29,7 +31,7 @@ all: $(APP_PATH)
 -include $(DEPS)
 
 $(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
-	$(CC) $(CFLAGS) $(DOPFLAGS) $^ -o $@ $(NSESFLAS)
+	$(CC) $(CFLAGS) $(GDBFLAGS) $(DOPFLAGS) $^ -o $@ $(NSESFLAS)
 
 $(LIB_PATH): $(LIB_OBJECTS)
 	ar rcs $@ $^

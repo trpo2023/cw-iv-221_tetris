@@ -51,8 +51,8 @@ void printGame(Game* tetGame)
         for (int j = 0; j < tf->width; j++) {
             int symbol = 1;
 
-            if (tf->blocks[i * tf->width + j].b
-                != 0) { // Если текущий блок не пуст, то выводим его на экран
+            // Если текущий блок не пуст, то выводим его на экран
+            if (tf->blocks[i * tf->width + j].b != 0) {
                 symbol = 2;
             } else {
                 int x = j - t->x;
@@ -104,9 +104,9 @@ int main(int argc, char* argv[])
     player.action = PLAYER_NON;
     tetGame->player = &player;
     dropNewFigure(tetGame);
+    // фикируем начальный момент времени
     while (tetGame->playing != TET_GAMEOVER) {
-        clock_gettime(
-                CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
+        clock_gettime(CLOCK_MONOTONIC, &start);
 
         int ch = getch();
         switch (ch) {
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
             player.action = PLAYER_DOWN;
             break;
 
-        case 'a':
+        case 'a': 
             player.action = PLAYER_LEFT;
             break;
 

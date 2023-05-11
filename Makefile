@@ -3,7 +3,7 @@ APP_NAME = tetris
 LIB_NAME = libtetris
 
 NSESFLAS = -lncurses
-CFLAGS = -Wall 
+CFLAGS = -Wall -g -O0
 DOPFLAGS = -I src -MMD
 
 BIN_DIR = bin

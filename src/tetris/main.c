@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
         clock_gettime(
                 CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
 
-        int ch = getch();
+        int ch = getchar();
         switch (ch) {
         case 'w':
             player.action = PLAYER_UP;
@@ -104,9 +104,11 @@ int main(int argc, char* argv[])
             player.action = PLAYER_RIGHT;
             break;
 
-        case 'q':
-            tetGame->playing = TET_GAMEOVER;
-            break;
+        case 'q': {
+            freeGameTet(tetGame);
+            endwin();
+            exit(0);
+        } break;
 
         case 'p':
             getchar();
@@ -126,12 +128,14 @@ int main(int argc, char* argv[])
         attroff(COLOR_PAIR(1));
 
         refresh();
+
         clock_gettime(CLOCK_MONOTONIC, &end);
         if (end.tv_sec - start.tv_sec <= 0
             && (ts2.tv_nsec = 33000000 - (end.tv_nsec - start.tv_nsec)) > 0) {
             nanosleep(&ts2, &ts1);
         }
     }
+
     freeGameTet(tetGame);
     endwin();
     return 0;

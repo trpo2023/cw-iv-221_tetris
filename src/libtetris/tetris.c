@@ -13,6 +13,7 @@ Game* createGame(
 
     tetrisGame->field = createField(width, height);
     tetrisGame->figures = createFigures(count, size, template);
+    tetrisGame->figure = NULL;
 
     tetrisGame->ticks = speed;
     tetrisGame->ticksLeft = speed;
@@ -127,12 +128,13 @@ void calculateTetris(Game* tetGame)
         }
     }
     switch (tetGame->player->action) {
-    case PLAYER_DOWN:
+    case PLAYER_DOWN: {
         moveFigureDown(tetGame);
         if (collisionEnter(tetGame))
             moveFigureUp(tetGame);
         break;
-    case PLAYER_UP:
+    }
+    case PLAYER_UP: {
         Figure* t = rotateFigure(tetGame);
         Figure* old = tetGame->figure;
         tetGame->figure = t;
@@ -143,16 +145,19 @@ void calculateTetris(Game* tetGame)
             freeFigureTet(old);
         }
         break;
-    case PLAYER_LEFT:
+    }
+    case PLAYER_LEFT: {
         moveFigureLeft(tetGame);
         if (collisionEnter(tetGame))
             moveFigureRight(tetGame);
         break;
-    case PLAYER_RIGHT:
+    }
+    case PLAYER_RIGHT: {
         moveFigureRight(tetGame);
         if (collisionEnter(tetGame))
             moveFigureLeft(tetGame);
         break;
+    }
     case PLAYER_NON:
     default:
         break;
@@ -274,9 +279,8 @@ int lineTetris(Game* tetGame) // удаляет заполнненые стро�
 // Освобождение памяти
 void freeFigureTet(Figure* f)
 {
-    if (f != NULL) {
+    if (f != NULL)
         free(f->blocks);
-    }
 
     free(f);
 }
@@ -286,9 +290,8 @@ void freeFiguresTet(Figures* f)
 }
 void freeFieldTet(Field* f)
 {
-    if (f != NULL) {
+    if (f != NULL)
         free(f->blocks);
-    }
 
     free(f);
 }
@@ -297,6 +300,7 @@ void freeGameTet(Game* g)
     if (g != NULL) {
         freeFieldTet(g->field);
         freeFiguresTet(g->figures);
+        freeFigureTet(g->figure);
         free(g);
     }
 }

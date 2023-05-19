@@ -68,11 +68,5 @@ enum { TET_GAMEOVER = 0, TET_PLAYING };
 void freeFigureTet(Figure* f);
 void freeFiguresTet(Figures* f);
 void freeFieldTet(Field* f);
-<<<<<<< HEAD
 void freeGameTet(Game* g);
 int menu(void);
-||||||| parent of 4ba877e (Fixes from respond 5 (make fuctions static), #15)
-void freeGameTet(Game* g);
-=======
-void freeGameTet(Game* g);
->>>>>>> 4ba877e (Fixes from respond 5 (make fuctions static), #15)

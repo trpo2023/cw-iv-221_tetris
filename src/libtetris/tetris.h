@@ -71,3 +71,4 @@ void freeFigureTet(Figure* f);
 void freeFiguresTet(Figures* f);
 void freeFieldTet(Field* f);
 void freeGameTet(Game* g);
+int menu(void);

@@ -53,6 +53,8 @@ void printGame(Game* tetGame)
 
 int main(int argc, char* argv[])
 {
+    if(menu() == 1)
+        exit(0);
     int width = 25;
     int height = 25;
     int speed = 45;
@@ -86,7 +88,7 @@ int main(int argc, char* argv[])
         clock_gettime(
                 CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
 
-        int ch = getchar();
+        int ch = getch();
         switch (ch) {
         case 'w':
             player.action = PLAYER_UP;

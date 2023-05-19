@@ -219,14 +219,11 @@ void dropNewFigure(Game* tetGame)
             // Присваиваем значени текущей фигуры из списка всех
             // фигур(templates), т.е. t - это текущая фигура
 
-            t->blocks[i * t->size + j].b
-                    = tetGame->figures
-                              ->blocks
-                                      [fnum * t->size * t->size + i * t->size
-                                       + j]
-                              .b;
-        }
-    }
+            //clang-format off
+                            t->blocks[i * t->size + j].b = tetGame->figures->blocks[fnum * t->size * t->size + i * t->size+ j].b;
+                        }
+                    }
+            //clang-format on
 
     // Меняем на новую фигуру
     freeFigureTet(tetGame->figure);
@@ -276,7 +273,7 @@ void plantFigure(Game* tetGame)
     }
 }
 // Подсчет очков
-void dropLine(int i, Field* tfl)
+static void dropLine(int i, Field* tfl)
 {
     if (i == 0) { // Елси строка нулевая, то очищаем
         for (int j = 0; j < tfl->width; j++) {
@@ -291,7 +288,7 @@ void dropLine(int i, Field* tfl)
         }
     }
 }
-int lineFilled(int i, Field* tfl) // Проверяет заполнена ли строка
+static int lineFilled(int i, Field* tfl) // Проверяет заполнена ли строка
 {
     for (int j = 0; j < tfl->width; j++) {
         if (tfl->blocks[i * tfl->width + j].b == 0) {
@@ -343,3 +340,5 @@ void freeGameTet(Game* g)
         free(g);
     }
 }
+
+

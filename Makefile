@@ -6,6 +6,8 @@ NSESFLAS = -lncurses
 CFLAGS = -Wall -g -O0
 DOPFLAGS = -I src -MMD
 
+
+
 BIN_DIR = bin
 OBJ_DIR = obj
 SRC_DIR = src

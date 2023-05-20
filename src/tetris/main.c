@@ -1,46 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
+#include <time.h>
 
 #include <ncurses.h>
 
 #include <libtetris/tetris.h>
 //clang-format off
-Block templates[] = {0, 0, 1, 0, 0,
-                     0, 0, 1, 0, 0,
-                     0, 0, 1, 0, 0,
-                     0, 0, 1, 0, 0,
+Block templates[] = {0, 0, 1, 0, 0, 
+                     0, 0, 1, 0, 0, 
+                     0, 0, 1, 0, 0, 
+                     0, 0, 1, 0, 0, 
                      0, 0, 1, 0, 0,
 
-                     0, 0, 0, 0, 0,
-                     0, 0, 1, 0, 0,
-                     0, 1, 1, 1, 0,
-                     0, 0, 0, 0, 0,
-                     0, 0, 0, 0, 0,
-
-                     0, 0, 0, 0, 0,
-                     0, 0, 1, 1, 0,
-                     0, 0, 1, 0, 0,
-                     0, 0, 1, 0, 0,
+                     0, 0, 0, 0, 0, 
+                     0, 0, 1, 0, 0, 
+                     0, 1, 1, 1, 0, 
+                     0, 0, 0, 0, 0, 
                      0, 0, 0, 0, 0,
 
-                     0, 0, 0, 0, 0,
-                     0, 1, 1, 0, 0,
-                     0, 0, 1, 0, 0,
-                     0, 0, 1, 0, 0,
-                     0, 0, 0, 0, 0,
-
-                     0, 0, 0, 0, 0,
-                     0, 0, 1, 1, 0,
-                     0, 1, 1, 0, 0,
-                     0, 0, 0, 0, 0,
+                     0, 0, 0, 0, 0, 
+                     0, 0, 1, 1, 0, 
+                     0, 0, 1, 0, 0, 
+                     0, 0, 1, 0, 0, 
                      0, 0, 0, 0, 0,
 
+                     0, 0, 0, 0, 0, 
+                     0, 1, 1, 0, 0, 
+                     0, 0, 1, 0, 0, 
+                     0, 0, 1, 0, 0, 
                      0, 0, 0, 0, 0,
-                     0, 1, 1, 0, 0,
-                     0, 0, 1, 1, 0,
+
+                     0, 0, 0, 0, 0, 
+                     0, 0, 1, 1, 0, 
+                     0, 1, 1, 0, 0, 
+                     0, 0, 0, 0, 0, 
                      0, 0, 0, 0, 0,
+
+                     0, 0, 0, 0, 0, 
+                     0, 1, 1, 0, 0, 
+                     0, 0, 1, 1, 0, 
+                     0, 0, 0, 0, 0, 
                      0, 0, 0, 0, 0};
 //clang-format on
 void printGame(Game* tetGame)
@@ -74,11 +74,11 @@ void printGame(Game* tetGame)
 
 int main(int argc, char* argv[])
 {
-    FILE *fr = fopen("max/score.txt", "r");
-    char str[10]; 
+    FILE* fr = fopen("max/score.txt", "r");
+    char str[10];
     fgets(str, 10, fr);
     int max = atoi(str);
-    if(menu() == 1)
+    if (menu() == 1)
         exit(0);
     int width = 25;
     int height = 25;
@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
             player.action = PLAYER_DOWN;
             break;
 
-        case 'a': 
+        case 'a':
             player.action = PLAYER_LEFT;
             break;
 
@@ -133,13 +133,12 @@ int main(int argc, char* argv[])
 
         case 'q': {
             fclose(fr);
-            if (tetGame->score > max)
-            {
-                FILE *fw = fopen("max/score.txt", "w");
+            if (tetGame->score > max) {
+                FILE* fw = fopen("max/score.txt", "w");
                 fprintf(fw, "%d", tetGame->score);
                 fclose(fw);
             }
-            
+
             freeGameTet(tetGame);
             endwin();
             exit(0);
@@ -171,9 +170,8 @@ int main(int argc, char* argv[])
         }
     }
     fclose(fr);
-    if (tetGame->score > max)
-    {
-        FILE *fw = fopen("max/score.txt", "w");
+    if (tetGame->score > max) {
+        FILE* fw = fopen("max/score.txt", "w");
         fprintf(fw, "%d", tetGame->score);
         fclose(fw);
     }

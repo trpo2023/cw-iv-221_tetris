@@ -92,16 +92,21 @@ int main(int argc, char* argv[])
             speed = atoi(argv[3]);
     }
 
-    struct timespec start, end, ts1, ts2 = {0, 0};
+    struct timespec start, end, ts1,
+            ts2 = {0, 0}; // снижает частоту срабатывания игрового цикла до 30
+                          // кадров в секунду
 
-    initscr();
-    start_color();
+    initscr(); // Инициализирует библиотеку curses, выделяет память для структур
+    start_color(); // инициализировать цвета
+    // второй аргумет - цвет, третий аргумет - фон
     init_pair(1, COLOR_WHITE, COLOR_MAGENTA);
     init_pair(2, COLOR_GREEN, COLOR_GREEN);
-    cbreak();
-    noecho();
-    nodelay(stdscr, TRUE);
-    scrollok(stdscr, TRUE);
+    cbreak(); // Позволяет сочетаниями клавиш ctrl+c или ctrl+z прерывать
+              // выполнение программы, елси заменить на raw(), то эти сочетания
+              // клавиш не будут оказывать на приложение никакого эффекта
+    noecho(); // отключает вывод нажатых клавиш
+    nodelay(stdscr, TRUE); // отключает задержку при вызове функции getch
+    scrollok(stdscr, TRUE); // отключает скроллинг
 
     Game* tetGame = createGame(width, height, 5, 6, templates, speed);
 
@@ -109,11 +114,13 @@ int main(int argc, char* argv[])
     player.action = PLAYER_NON;
     tetGame->player = &player;
     dropNewFigure(tetGame);
-    // фикируем начальный момент времени
     while (tetGame->playing != TET_GAMEOVER) {
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        clock_gettime(
+                CLOCK_MONOTONIC, &start); // фикируем начальный момент времени
+        // CLOCK_MONOTONIC - часы, которые  показывают монотонный ход времени
+        // отсчитываемой с некой неопределённой начальной точки
 
-        int ch = getch();
+        int ch = getch(); // Как getchar(), но не надо жать Enter после ввода
         switch (ch) {
         case 'w':
             player.action = PLAYER_UP;
@@ -163,10 +170,15 @@ int main(int argc, char* argv[])
 
         refresh();
 
-        clock_gettime(CLOCK_MONOTONIC, &end);
+        clock_gettime(
+                CLOCK_MONOTONIC, &end); // фикируем конечный момент времени
+
+        // 1 условие - если расчет игры
+        // произошел меньше, чем за секунду
+        // Во втором условие расчитывается задержка
         if (end.tv_sec - start.tv_sec <= 0
             && (ts2.tv_nsec = 33000000 - (end.tv_nsec - start.tv_nsec)) > 0) {
-            nanosleep(&ts2, &ts1);
+            nanosleep(&ts2, &ts1); // Выполняем задержку
         }
     }
     fclose(fr);
@@ -176,6 +188,6 @@ int main(int argc, char* argv[])
         fclose(fw);
     }
     freeGameTet(tetGame);
-    endwin();
+    endwin(); // освобождает память
     return 0;
 }

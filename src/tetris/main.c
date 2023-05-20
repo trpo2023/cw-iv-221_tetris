@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include <ncurses.h>
 
@@ -73,6 +74,10 @@ void printGame(Game* tetGame)
 
 int main(int argc, char* argv[])
 {
+    FILE *fr = fopen("max/score.txt", "r");
+    char str[10]; 
+    fgets(str, 10, fr);
+    int max = atoi(str);
     if(menu() == 1)
         exit(0);
     int width = 25;
@@ -127,6 +132,14 @@ int main(int argc, char* argv[])
             break;
 
         case 'q': {
+            fclose(fr);
+            if (tetGame->score > max)
+            {
+                FILE *fw = fopen("max/score.txt", "w");
+                fprintf(fw, "%d", tetGame->score);
+                fclose(fw);
+            }
+            
             freeGameTet(tetGame);
             endwin();
             exit(0);
@@ -145,7 +158,7 @@ int main(int argc, char* argv[])
         printGame(tetGame);
 
         attron(COLOR_PAIR(1));
-        mvprintw(0, 0, "Score: %d", tetGame->score);
+        mvprintw(0, 0, "Score: %d   MAX SCORE: %d", tetGame->score, max);
         move(tetGame->field->height + 1, tetGame->field->width + 1);
         attroff(COLOR_PAIR(1));
 
@@ -157,7 +170,13 @@ int main(int argc, char* argv[])
             nanosleep(&ts2, &ts1);
         }
     }
-
+    fclose(fr);
+    if (tetGame->score > max)
+    {
+        FILE *fw = fopen("max/score.txt", "w");
+        fprintf(fw, "%d", tetGame->score);
+        fclose(fw);
+    }
     freeGameTet(tetGame);
     endwin();
     return 0;

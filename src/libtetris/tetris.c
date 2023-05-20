@@ -212,6 +212,7 @@ void dropNewFigure(Game* tetGame)
     t->y = 0;
 
     // Выбрать рандомную фигуру из списка templates()
+    srand(time(NULL));
     int fnum = rand() % tetGame->figures->count;
 
     for (int i = 0; i < t->size; i++) {

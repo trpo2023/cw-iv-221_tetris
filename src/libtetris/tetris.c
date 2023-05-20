@@ -1,7 +1,7 @@
 #include "tetris.h"
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h>
-//Приветсвие
+// Приветсвие
 int menu()
 {
     printf("\n");
@@ -222,16 +222,11 @@ void dropNewFigure(Game* tetGame)
             // Присваиваем значени текущей фигуры из списка всех
             // фигур(templates), т.е. t - это текущая фигура
 
-            //clang-format off
-            t->blocks[i * t->size + j].b
-                    = tetGame->figures
-                              ->blocks
-                                      [fnum * t->size * t->size + i * t->size
-                                       + j]
-                              .b;
+            // clang-format off
+            t->blocks[i * t->size + j].b= tetGame->figures->blocks[fnum * t->size * t->size + i * t->size+ j].b;
         }
     }
-    //clang-format on
+    // clang-format on
 
     // Меняем на новую фигуру
     freeFigureTet(tetGame->figure);

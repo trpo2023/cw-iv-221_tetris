@@ -6,7 +6,7 @@
 #include <ncurses.h>
 
 #include <libtetris/tetris.h>
-//clang-format off
+// clang-format off
 Block templates[] = {0, 0, 1, 0, 0, 
                      0, 0, 1, 0, 0, 
                      0, 0, 1, 0, 0, 
@@ -42,7 +42,7 @@ Block templates[] = {0, 0, 1, 0, 0,
                      0, 0, 1, 1, 0, 
                      0, 0, 0, 0, 0, 
                      0, 0, 0, 0, 0};
-//clang-format on
+// clang-format on
 void printGame(Game* tetGame)
 {
     Field* tf = tetGame->field;

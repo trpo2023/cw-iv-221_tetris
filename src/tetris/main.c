@@ -75,6 +75,10 @@ void printGame(Game* tetGame)
 int main(int argc, char* argv[])
 {
     FILE* fr = fopen("max/score.txt", "r");
+    if (!fr) {
+        printf("Не удалось открыть файл\n");
+        exit(1);
+    }
     char str[10];
     fgets(str, 10, fr);
     int max = atoi(str);
@@ -142,6 +146,10 @@ int main(int argc, char* argv[])
             fclose(fr);
             if (tetGame->score > max) {
                 FILE* fw = fopen("max/score.txt", "w");
+                if (!fw) {
+                    printf("Не удалось открыть файл\n");
+                    exit(1);
+                }
                 fprintf(fw, "%d", tetGame->score);
                 fclose(fw);
             }
@@ -184,6 +192,10 @@ int main(int argc, char* argv[])
     fclose(fr);
     if (tetGame->score > max) {
         FILE* fw = fopen("max/score.txt", "w");
+        if (!fw) {
+            printf("Не удалось открыть файл\n");
+            exit(1);
+        }
         fprintf(fw, "%d", tetGame->score);
         fclose(fw);
     }

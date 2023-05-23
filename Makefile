@@ -15,7 +15,7 @@ OBJ_DIR = obj
 SRC_DIR = src
 TEST_DIR = test
 
-APP_PATH = $(BIN_DIR)/$(APP_NAME)
+APP_PATH = $(BIN_DIR)/tetrisApp
 LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_NAME)/$(LIB_NAME).a
 TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
 

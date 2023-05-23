@@ -37,6 +37,7 @@ void printGame(Game* tetGame)
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
     // clang-format off
     Block templates[] = {0, 0, 1, 0, 0, 
                         0, 0, 1, 0, 0, 

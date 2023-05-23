@@ -213,14 +213,17 @@ void dropNewFigure(Game* tetGame)
 
     // Выбрать рандомную фигуру из списка templates()
     int fnum = rand() % tetGame->figures->count;
-
+    newFigure(tetGame, fnum, t);
+}
+void newFigure(Game* tetGame, int figureType, Figure* t)
+{
     for (int i = 0; i < t->size; i++) {
         for (int j = 0; j < t->size; j++) {
             // Присваиваем значени текущей фигуры из списка всех
             // фигур(templates), т.е. t - это текущая фигура
 
             // clang-format off
-            t->blocks[i * t->size + j].b= tetGame->figures->blocks[fnum * t->size * t->size + i * t->size+ j].b;
+            t->blocks[i * t->size + j].b= tetGame->figures->blocks[figureType * t->size * t->size + i * t->size+ j].b;
         }
     }
     // clang-format on

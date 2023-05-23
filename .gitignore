@@ -2,3 +2,5 @@
 *.d
 *.o
 .DS_Store
+tetrisApp
+main_test

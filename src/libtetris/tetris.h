@@ -57,6 +57,7 @@ Figure* rotateFigure(Game* tetGame);
 // Основная логика игры
 void calculateTetris(Game* tetGame);
 void dropNewFigure(Game* tetGame);
+void newFigure(Game* tetGame, int figureType, Figure* t);
 int collisionEnter(Game* tetGame);
 void plantFigure(Game* tetGame);
 
